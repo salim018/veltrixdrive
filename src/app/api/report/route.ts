@@ -1,21 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { buildReportPdf, buildFallbackPdf } from "@/lib/pdf/report";
 import type { AnalysisResult } from "@/types/analysis";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const MIN_PDF_BYTES = 1000;
-
-/**
- * GET /api/report?id=<analysis_id>
- *
- * Always returns a valid PDF (never JSON) for authenticated owners of the
- * analysis. If full-report generation fails for any reason, a minimal
- * fallback PDF with an explanatory message is returned instead.
- * Unauthenticated / missing-id / not-found paths still use NextResponse.json
- * (those are not successful requests and the frontend handles them).
  */
 export async function GET(request: Request) {
   console.log("[report] PDF start");
@@ -100,3 +88,5 @@ export async function GET(request: Request) {
     }
   });
 }
+
+
