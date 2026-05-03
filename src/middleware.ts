@@ -48,26 +48,3 @@ export const config = {
 
 
 
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-
-export function middleware(req: NextRequest) {
-  const url = req.nextUrl;
-
-  // laat login en api toe
-  if (
-    url.pathname.startsWith("/login") ||
-    url.pathname.startsWith("/api")
-  ) {
-    return NextResponse.next();
-  }
-
-  // blokkeer alles anders
-  return new NextResponse("Private beta - login required", {
-    status: 403,
-  });
-}
-
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};

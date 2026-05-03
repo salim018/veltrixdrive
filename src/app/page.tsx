@@ -1,16 +1,14 @@
-import { getSessionUser } from "@/lib/auth/session";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { LandingContent } from "./LandingContent";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 
-export default async function HomePage() {
-  const { user, credits } = await getSessionUser();
+export default async function Home() {
+  const supabase = createClient();
 
-  return (
-    <>
-      <Header user={user} credits={credits} />
-      <LandingContent isAuthed={!!user} />
-      <Footer />
-    </>
-  );
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  redirect("/dashboard");
 }
